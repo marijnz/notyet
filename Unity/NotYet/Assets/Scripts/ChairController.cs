@@ -45,7 +45,7 @@ public class ChairController : MonoBehaviour {
 
         ladderHeight += (h * resizeSpeed);
 
-        ladderHeight = Mathf.Clamp(ladderHeight, 1, 3);
+        ladderHeight = Mathf.Clamp(ladderHeight, 1, maxHeight);
 
         Ladder.localScale = new Vector3(1, ladderHeight, 1);
       //  Ladder.position = LadderBottom.transform.position + new Vector3(0, ladderHeight, 0);
