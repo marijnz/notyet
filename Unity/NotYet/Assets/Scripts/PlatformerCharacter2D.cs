@@ -6,7 +6,7 @@ using UnityEngine;
     {
 
         public ChairController UpperCharacter;
-
+        public Transform BodyLegs;
 
 
         [SerializeField] private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
@@ -93,6 +93,17 @@ using UnityEngine;
                     Flip();
                 }
             }
+
+            Vector3 rotation = BodyLegs.rotation.eulerAngles;
+            rotation.z += -Mathf.Abs(m_Rigidbody2D.velocity.x);
+            BodyLegs.rotation = Quaternion.Euler(rotation);
+
+
+
+      //            BodyLegs.rotation = Quaterm_Rigidbody2D.velocity
+
+
+
             // If the player should jump...
             //if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             if (m_Grounded && jump)

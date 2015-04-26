@@ -77,7 +77,6 @@ public class ChairController : MonoBehaviour {
         }
 
         Vector3 eulerOfLadder = LadderRotationThing.transform.rotation.eulerAngles;
-        Debug.Log(move);
         float z = eulerOfLadder.z;
         z -= move * Time.deltaTime * 200;
         if (move > 0 && z < (360 - 60) && z > 60)

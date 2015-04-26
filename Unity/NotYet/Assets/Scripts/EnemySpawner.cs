@@ -34,6 +34,7 @@ public class EnemySpawner : MonoBehaviour {
 
         Transform instance = (Transform)Instantiate(EnemyPrefabs[Random.Range(0, EnemyPrefabs.Count - 1)], new Vector3(randomX, randomY), Quaternion.identity);
 
+        instance.GetComponent<Rigidbody2D>().AddForce(new Vector3(Random.Range(-50, 50),0));
 
     }
 }
