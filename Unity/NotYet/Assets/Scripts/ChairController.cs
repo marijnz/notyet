@@ -101,6 +101,8 @@ public class ChairController : MonoBehaviour {
     {
         isHitting = true;
 
+        this.GetComponent<AudioSource>().Play();
+
 
         while (BatHand.rotation.eulerAngles.z <= 130)
         {

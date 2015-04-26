@@ -9,6 +9,10 @@ using UnityEngine;
         public Transform BodyLegs;
 
 
+        public Sprite WalkingSprite;
+        public Sprite StandingSprite;
+
+
         [SerializeField] private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
         [SerializeField] private float m_JumpForce = 400f;                  // Amount of force added when the player jumps.
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
@@ -98,6 +102,18 @@ using UnityEngine;
             rotation.z += -Mathf.Abs(m_Rigidbody2D.velocity.x);
             BodyLegs.rotation = Quaternion.Euler(rotation);
 
+
+            if (m_Rigidbody2D.velocity.x == 0)
+            {
+                BodyLegs.GetComponent<SpriteRenderer>().sprite = StandingSprite;
+                Vector3 rot = BodyLegs.rotation.eulerAngles;
+                rot.z = 180;
+                BodyLegs.rotation = Quaternion.Euler(rot);
+            } 
+            else
+            {
+                BodyLegs.GetComponent<SpriteRenderer>().sprite = WalkingSprite;
+            }
 
 
       //            BodyLegs.rotation = Quaterm_Rigidbody2D.velocity
