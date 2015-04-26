@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets._2D
-{
     public class PlatformerCharacter2D : MonoBehaviour
     {
+
+        public ChairController UpperCharacter;
+
+
+
         [SerializeField] private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
         [SerializeField] private float m_JumpForce = 400f;                  // Amount of force added when the player jumps.
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
@@ -101,8 +104,9 @@ namespace UnityStandardAssets._2D
         }
 
 
-        private void Flip()
+        public void Flip()
         {
+            UpperCharacter.Flip();
             // Switch the way the player is labelled as facing.
             m_FacingRight = !m_FacingRight;
 
@@ -112,4 +116,3 @@ namespace UnityStandardAssets._2D
             transform.localScale = theScale;
         }
     }
-}

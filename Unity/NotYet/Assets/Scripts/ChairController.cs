@@ -12,10 +12,29 @@ public class ChairController : MonoBehaviour {
 
     float ladderHeight = 1;
 
+    bool isHitting = false;
+
+
+    public Transform BatHand;
+
+    private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+
+
 	// Use this for initialization
 	void Start () {
 	
 	}
+
+    public void Flip()
+    {
+        // Switch the way the player is labelled as facing.
+        m_FacingRight = !m_FacingRight;
+
+        // Multiply the player's x local scale by -1.
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -28,5 +47,59 @@ public class ChairController : MonoBehaviour {
         Ladder.localScale = new Vector3(1, ladderHeight, 1);
         Ladder.position = LadderBottom.transform.position + new Vector3(0, ladderHeight, 0);
 
+
+
+        if (Input.GetKeyDown("enter") && !isHitting)
+        {
+            BatHand.GetComponent<Rigidbody2D>().angularVelocity = 0;
+          // BatHand.GetComponent<Rigidbody2D>().AddTorque(500);
+           StopAllCoroutines();
+           StartCoroutine(HitWithBat());
+        }
+
+
+
+        float move = Input.GetAxis("Horizontal2");
+        // If the input is moving the player right and the player is facing left...
+        if (move > 0 && !m_FacingRight)
+        {
+            // ... flip the player.
+            Flip();
+        }
+        // Otherwise if the input is moving the player left and the player is facing right...
+        else if (move < 0 && m_FacingRight)
+        {
+            // ... flip the player.
+            Flip();
+        }
+
 	}
+
+
+    IEnumerator HitWithBat()
+    {
+        isHitting = true;
+        BatHand.GetComponent<Rigidbody2D>().AddTorque(700);
+        yield return new WaitForSeconds(0.15f);
+        StartCoroutine(ReturnBat());
+        yield return null;
+    }
+
+    IEnumerator ReturnBat()
+    {
+        var batHandRigidBody = BatHand.GetComponent<Rigidbody2D>();
+        batHandRigidBody.angularVelocity = 0;
+        while (batHandRigidBody.rotation > 0)
+        {
+            batHandRigidBody.rotation -= Time.deltaTime * 300;
+            yield return new WaitForEndOfFrame();
+        }
+        batHandRigidBody.angularVelocity = 0;
+        //Vector2.Lerp(
+        isHitting = false;
+        yield return null;
+
+    }
+
+
 }
