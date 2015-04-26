@@ -4,15 +4,18 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class ChairController : MonoBehaviour {
 
+    public static ChairController Instance;
+
     public float maxHeight = 3;
     public float resizeSpeed = 0.05f;
 
     public Transform Ladder;
     public Transform LadderBottom;
+    public Transform LadderRotationThing;
 
     float ladderHeight = 1;
 
-    bool isHitting = false;
+    public bool isHitting = false;
 
 
     public Transform BatHand;
@@ -21,8 +24,8 @@ public class ChairController : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+        Instance = this;
 	}
 
     public void Flip()
@@ -45,7 +48,7 @@ public class ChairController : MonoBehaviour {
         ladderHeight = Mathf.Clamp(ladderHeight, 1, 3);
 
         Ladder.localScale = new Vector3(1, ladderHeight, 1);
-        Ladder.position = LadderBottom.transform.position + new Vector3(0, ladderHeight, 0);
+      //  Ladder.position = LadderBottom.transform.position + new Vector3(0, ladderHeight, 0);
 
 
 
@@ -72,6 +75,24 @@ public class ChairController : MonoBehaviour {
             // ... flip the player.
             Flip();
         }
+
+        Vector3 eulerOfLadder = LadderRotationThing.transform.rotation.eulerAngles;
+        Debug.Log(move);
+        float z = eulerOfLadder.z;
+        z -= move * Time.deltaTime * 200;
+        if (move > 0 && z < (360 - 60) && z > 60)
+        {
+            return;
+        }
+
+        if (move < 0 && z > (0 + 60) && z < (360 - 60))
+        {
+            return;
+        }
+
+        Vector3 newEuler = new Vector3(0,0, z);
+
+        LadderRotationThing.transform.rotation = Quaternion.Euler(newEuler);
 
 	}
 
