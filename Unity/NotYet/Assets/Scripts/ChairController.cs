@@ -76,22 +76,63 @@ public class ChairController : MonoBehaviour {
 	}
 
 
+
     IEnumerator HitWithBat()
     {
         isHitting = true;
-        BatHand.GetComponent<Rigidbody2D>().AddTorque(700);
-        yield return new WaitForSeconds(0.15f);
-        StartCoroutine(ReturnBat());
-        yield return null;
+
+
+        while (BatHand.rotation.eulerAngles.z <= 130)
+        {
+            Vector3 euler =  BatHand.rotation.eulerAngles;
+            euler.z += Time.deltaTime * 800;
+            BatHand.rotation = Quaternion.Euler(euler);
+            yield return new WaitForEndOfFrame();
+        }
+
+
+        while (BatHand.rotation.eulerAngles.z < 350)
+        {
+            Vector3 euler = BatHand.rotation.eulerAngles;
+            euler.z -= Time.deltaTime * 500;
+            BatHand.rotation = Quaternion.Euler(euler);
+            yield return new WaitForEndOfFrame();
+        }
+
+        Vector3 eulerAgain = BatHand.rotation.eulerAngles;
+        eulerAgain.z = 0 ;
+        BatHand.rotation = Quaternion.Euler(eulerAgain);
+
+
+        isHitting = false;
     }
 
     IEnumerator ReturnBat()
     {
         var batHandRigidBody = BatHand.GetComponent<Rigidbody2D>();
         batHandRigidBody.angularVelocity = 0;
+
+        ;
         while (batHandRigidBody.rotation > 0)
         {
             batHandRigidBody.rotation -= Time.deltaTime * 300;
+            yield return new WaitForEndOfFrame();
+        }
+        batHandRigidBody.angularVelocity = 0;
+        //Vector2.Lerp(
+        isHitting = false;
+        yield return null;
+
+    }
+
+
+    IEnumerator HitBat()
+    {
+        var batHandRigidBody = BatHand.GetComponent<Rigidbody2D>();
+        batHandRigidBody.angularVelocity = 0;
+        while (true)
+        {
+            batHandRigidBody.rotation += Time.deltaTime * 300;
             yield return new WaitForEndOfFrame();
         }
         batHandRigidBody.angularVelocity = 0;
