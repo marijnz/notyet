@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
     public class PlatformerCharacter2D : MonoBehaviour
@@ -100,13 +101,36 @@ using UnityEngine;
                 m_Grounded = false;
                // m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+                StopCoroutine(AddBoost());
+                StartCoroutine(AddBoost());
+                
             }
         }
 
+        IEnumerator AddBoost()
+        {
+            /*
+            while (m_MaxSpeed < 20)
+            {
+                m_MaxSpeed += Time.deltaTime * 200;
+                yield return new WaitForEndOfFrame();
+            }*/
+
+
+            m_MaxSpeed = 20;
+
+            while (m_MaxSpeed > 10)
+            {
+                m_MaxSpeed -= Time.deltaTime * 10;
+                yield return new WaitForEndOfFrame();
+            }
+            m_MaxSpeed = 10;
+            yield return null;
+        }
 
         public void Flip()
         {
-            UpperCharacter.Flip();
+            //UpperCharacter.Flip();
             // Switch the way the player is labelled as facing.
             m_FacingRight = !m_FacingRight;
 
